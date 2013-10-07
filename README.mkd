@@ -16,17 +16,17 @@ $ ./stack.sh
 
 #### Log In
 
-![Log In](/img/login.png)
+![Log In](https://raw.github.com/SQLab/cloudos-exercise/master/img/login.png)
 
 #### Launch Your First Instance
 
-![First Instance](/img/first_launch_1.png)
+![First Instance](https://raw.github.com/SQLab/cloudos-exercise/master/img/first_launch_1.png)
 
-![First Instance](/img/first_launch_2.png)
+![First Instance](https://raw.github.com/SQLab/cloudos-exercise/master/img/first_launch_2.png)
 
 #### Say Hello to the World
 
-![Ping the world](/img/ping.png)
+![Ping the world](https://raw.github.com/SQLab/cloudos-exercise/master/img/ping.png)
 
 
 ### Make Yourself a Persistent Home
@@ -40,15 +40,15 @@ $ find /dev/ -type b | grep vd
 
 #### Add a New Volume
 
-![Adding a new volume](/img/add_new_volume_1.png)
+![Adding a new volume](https://raw.github.com/SQLab/cloudos-exercise/master/img/add_new_volume_1.png)
 
-![Adding a new volume](/img/add_new_volume_2.png)
+![Adding a new volume](https://raw.github.com/SQLab/cloudos-exercise/master/img/add_new_volume_2.png)
 
 #### Attach the New Volume
 
-![Attaching the new volume](/img/attach_new_volume_1.png)
+![Attaching the new volume](https://raw.github.com/SQLab/cloudos-exercise/master/img/attach_new_volume_1.png)
 
-![Attaching the new volume](/img/attach_new_volume_2.png)
+![Attaching the new volume](https://raw.github.com/SQLab/cloudos-exercise/master/img/attach_new_volume_2.png)
 
 ```
 $ find /dev/ -type b | grep vd
