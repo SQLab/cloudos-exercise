@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="CloudOS Exercises : Exercises of CloudOS" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>CloudOS Exercises</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/SQLab/cloudos-exercise">View on GitHub</a>
+
+          <h1 id="project_title">CloudOS Exercises</h1>
+          <h2 id="project_tagline">Exercises of CloudOS</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/SQLab/cloudos-exercise/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/SQLab/cloudos-exercise/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="cloud-operating-system" class="anchor" href="#cloud-operating-system"><span class="octicon octicon-link"></span></a>Cloud Operating System</h1>
+
+<h2>
+<a name="exercise-1" class="anchor" href="#exercise-1"><span class="octicon octicon-link"></span></a>Exercise #1</h2>
+
+<h3>
+<a name="install-devstack" class="anchor" href="#install-devstack"><span class="octicon octicon-link"></span></a>Install DevStack</h3>
+
+<pre><code>$ git clone https://github.com/openstack-dev/devstack.git
+$ cd devstack
+$ ./stack.sh
+</code></pre>
+
+<h3>
+<a name="start-your-engine" class="anchor" href="#start-your-engine"><span class="octicon octicon-link"></span></a>Start Your Engine</h3>
+
+<h4>
+<a name="log-in" class="anchor" href="#log-in"><span class="octicon octicon-link"></span></a>Log In</h4>
+
+<p><img src="/img/login.png" alt="Log In"></p>
+
+<h4>
+<a name="launch-your-first-instance" class="anchor" href="#launch-your-first-instance"><span class="octicon octicon-link"></span></a>Launch Your First Instance</h4>
+
+<p><img src="/img/first_launch_1.png" alt="First Instance"></p>
+
+<p><img src="/img/first_launch_2.png" alt="First Instance"></p>
+
+<h4>
+<a name="say-hello-to-the-world" class="anchor" href="#say-hello-to-the-world"><span class="octicon octicon-link"></span></a>Say Hello to the World</h4>
+
+<p><img src="/img/ping.png" alt="Ping the world"></p>
+
+<h3>
+<a name="make-yourself-a-persistent-home" class="anchor" href="#make-yourself-a-persistent-home"><span class="octicon octicon-link"></span></a>Make Yourself a Persistent Home</h3>
+
+<h4>
+<a name="check-out-existing-block-devices" class="anchor" href="#check-out-existing-block-devices"><span class="octicon octicon-link"></span></a>Check out existing block devices</h4>
+
+<pre><code>$ find /dev/ -type b | grep vd
+/dev/vda
+</code></pre>
+
+<h4>
+<a name="add-a-new-volume" class="anchor" href="#add-a-new-volume"><span class="octicon octicon-link"></span></a>Add a New Volume</h4>
+
+<p><img src="/img/add_new_volume_1.png" alt="Adding a new volume"></p>
+
+<p><img src="/img/add_new_volume_2.png" alt="Adding a new volume"></p>
+
+<h4>
+<a name="attach-the-new-volume" class="anchor" href="#attach-the-new-volume"><span class="octicon octicon-link"></span></a>Attach the New Volume</h4>
+
+<p><img src="/img/attach_new_volume_1.png" alt="Attaching the new volume"></p>
+
+<p><img src="/img/attach_new_volume_2.png" alt="Attaching the new volume"></p>
+
+<pre><code>$ find /dev/ -type b | grep vd
+/dev/vda
+/dev/vdb
+</code></pre>
+
+<h4>
+<a name="partition-the-new-volume" class="anchor" href="#partition-the-new-volume"><span class="octicon octicon-link"></span></a>Partition the New Volume</h4>
+
+<pre><code>$ sudo fdisk /dev/vdb
+...
+Command (m for help): p
+
+Disk /dev/vdb: 1073 MB, 1073741824 bytes
+...
+
+Command (m for help): n
+...
+Select (default p): &lt;Enter&gt;
+Partition number (1-4, default 1): &lt;Enter&gt;
+First sector (2048-2097151, default 2048): &lt;Enter&gt;
+Using default value 2048
+Last sector, +sectors or +size{K,M,G} (2048-2097151, default 2097151): &lt;Enter&gt;
+Using default value 2097151
+
+Command (m for help): p
+
+...
+Device Boot     Start   End         Blocks      Id      System
+/dev/vdb1       2048    2097151     1047552     83      Linux
+
+Command (m for help): w
+</code></pre>
+
+<h4>
+<a name="create-filesystem-and-mount-the-new-volume" class="anchor" href="#create-filesystem-and-mount-the-new-volume"><span class="octicon octicon-link"></span></a>Create filesystem and Mount the New Volume</h4>
+
+<pre><code>$ sudo mkfs.ext4 /dev/vdb1
+...
+$ sudo mount /dev/vdb1 /mnt
+$ mount
+/dev/vdb1 on /mnt type ext4 (...)
+</code></pre>
+
+<h3>
+<a name="build-a-better-network" class="anchor" href="#build-a-better-network"><span class="octicon octicon-link"></span></a>Build a Better Network</h3>
+
+<h4>
+<a name="destruction-before-construction" class="anchor" href="#destruction-before-construction"><span class="octicon octicon-link"></span></a>Destruction Before Construction</h4>
+
+<pre><code>$ cd devstack
+$ ./unstack.sh
+</code></pre>
+
+<h4>
+<a name="enable-neutron" class="anchor" href="#enable-neutron"><span class="octicon octicon-link"></span></a>Enable Neutron</h4>
+
+<p>Add the following into <code>localrc</code> file</p>
+
+<pre><code># enable neutron
+disable\_service n-net
+enable\_service q-svc
+enable\_service q-agt
+enable\_service q-dhcp
+enable\_service q-l3
+enable\_service q-meta
+enable\_service neutron
+</code></pre>
+
+<h4>
+<a name="start-your-engine-again" class="anchor" href="#start-your-engine-again"><span class="octicon octicon-link"></span></a>Start Your Engine Again</h4>
+
+<pre><code>$ ./stack.sh
+</code></pre>
+
+<h3>
+<a name="your-turn" class="anchor" href="#your-turn"><span class="octicon octicon-link"></span></a>Your Turn</h3>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">CloudOS Exercises maintained by <a href="https://github.com/SQLab">SQLab</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-42632450-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
