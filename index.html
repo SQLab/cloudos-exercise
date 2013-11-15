@@ -163,8 +163,122 @@ enable_service neutron
 <pre><code>$ ./stack.sh
 </code></pre>
 
+<h2>
+<a name="exercise-2" class="anchor" href="#exercise-2"><span class="octicon octicon-link"></span></a>Exercise #2</h2>
+
+<p><a href="http://www.openstack.org/software/havana/">OpenStack Havana released on 10/17, 2013</a>,
+so we're moving on to Havana. Before started the main exercises, there are a few things
+we need to do first.</p>
+
+<p>First, stop devstack and pull down the latest devstack</p>
+
+<pre><code>$ cd devstack
+$ ./unstack.sh
+$ git pull
+</code></pre>
+
+<p>Second, upgrade openvswitch. The version of openvswitch package in Ubuntu 12.04 is too
+old to work properly with the latest Neutron.</p>
+
+<pre><code>$ echo 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/havana main' | sudo tee /etc/apt/sources.list.d/cloud-archive.list
+$ sudo apt-get update
+$ sudo apt-get install openvswitch-common openvswitch-datapath-dkms openvswitch-switch
+$ sudo reboot
+</code></pre>
+
 <h3>
-<a name="your-turn" class="anchor" href="#your-turn"><span class="octicon octicon-link"></span></a>Your Turn</h3>
+<a name="multi-node-setup" class="anchor" href="#multi-node-setup"><span class="octicon octicon-link"></span></a>Multi-node Setup</h3>
+
+<p>Normally, a production OpenStack platform would consist of three kinds of nodes,
+controller node(s), network node(s) and compute nodes. In the previous exercise,
+we have built up a single node OpenStack setup. Let's call this node the controller
+node in this document, though it also acts as a network node and a compute node.
+And now, we're going to add an extra compute node.</p>
+
+<h4>
+<a name="configure-the-contoller-node" class="anchor" href="#configure-the-contoller-node"><span class="octicon octicon-link"></span></a>Configure the Contoller Node</h4>
+
+<p>Modify your localrc like this, and replace  with your settings.</p>
+
+<pre><code># localrc
+
+DATABASE_PASSWORD=&lt;password&gt;
+RABBIT_PASSWORD=&lt;password&gt;
+SERVICE_TOKEN=&lt;password&gt;
+SERVICE_PASSWORD=&lt;password&gt;
+ADMIN_PASSWORD=&lt;password&gt;
+
+# enable neutron
+disable_service n-net
+enable_service q-svc
+enable_service q-agt
+enable_service q-dhcp
+enable_service q-l3
+enable_service q-meta
+enable_service neutron
+
+MULTI_HOST=1
+
+Q_PLUGIN=ml2
+ENABLE_TENANT_TUNNELS=True
+
+HOST_IP=&lt;ip address of this node&gt;
+VNCSERVER_LISTEN=$HOST_IP
+VNCSERVER_PROXYCLIENT_ADDRESS=$HOST_IP
+</code></pre>
+
+<p>And start devstack</p>
+
+<pre><code>$ cd devstack
+$ ./stack.sh
+</code></pre>
+
+<h4>
+<a name="setup-an-extra-compute-node" class="anchor" href="#setup-an-extra-compute-node"><span class="octicon octicon-link"></span></a>Setup an Extra Compute Node</h4>
+
+<p>The host environment of the extra compute node is just the same as the original node.
+It depends on how you want it to be setup. For example, if you install the controller
+node as an VM, you can simply clone a new one from it, and replace the ip and hostname
+with a different one. Also, don't forget to upgrade the openvswitch just like what we
+did above for the controller node.</p>
+
+<h4>
+<a name="configure-the-new-compute-node" class="anchor" href="#configure-the-new-compute-node"><span class="octicon octicon-link"></span></a>Configure the New Compute Node</h4>
+
+<p>Modify your localrc like this, and replace  with your settings.</p>
+
+<pre><code># localrc
+
+DATABASE_PASSWORD=&lt;password&gt;
+RABBIT_PASSWORD=&lt;password&gt;
+SERVICE_TOKEN=&lt;password&gt;
+SERVICE_PASSWORD=&lt;password&gt;
+ADMIN_PASSWORD=&lt;password&gt;
+
+MULTI_HOST=1
+
+SERVICE_HOST=&lt;ip address of the controller node&gt;
+GLANCE_HOSTPORT=$SERVICE_HOST:9292
+MYSQL_HOST=$SERVICE_HOST
+RABBIT_HOST=$SERVICE_HOST
+Q_HOST=$SERVICE_HOST
+MATCHMAKER_REDIS_HOST=$SERVICE_HOST
+
+ENABLED_SERVICES=n-cpu,n-api,n-novnc,rabbit,q-agt,neutron
+
+Q_PLUGIN=ml2
+ENABLE_TENANT_TUNNELS=True
+
+HOST_IP=&lt;ip address of this node&gt;
+VNCSERVER_LISTEN=$HOST_IP
+VNCSERVER_PROXYCLIENT_ADDRESS=$HOST_IP
+</code></pre>
+
+<p>And start devstack</p>
+
+<pre><code>$ cd devstack
+$ ./stack.sh
+</code></pre>
       </section>
     </div>
 
