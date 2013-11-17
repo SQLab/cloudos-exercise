@@ -31,7 +31,7 @@ $ ./stack.sh
 
 ### Make Yourself a Persistent Home
 
-#### Check out existing block devices
+#### Check Out Existing Block Devices
 
 ```
 $ find /dev/ -type b | grep vd
@@ -50,10 +50,11 @@ $ find /dev/ -type b | grep vd
 
 ![Attaching the new volume](https://raw.github.com/SQLab/cloudos-exercise/master/img/attach_new_volume_2.png)
 
+#### Check Out Existing Block Devices Again
 ```
 $ find /dev/ -type b | grep vd
 /dev/vda
-/dev/vdb
+/dev/vdb  <--- There you are!
 ```
 
 #### Partition the New Volume
@@ -159,7 +160,7 @@ And now, we're going to add an extra compute node.
 
 #### Configure the Contoller Node
 
-Modify your localrc like this, and replace <replaceme> with your settings.
+Modify your localrc like this, and replace \<replaceme\> with your settings.
 ```
 # localrc
 
@@ -204,7 +205,7 @@ did above for the controller node.
 
 #### Configure the New Compute Node
 
-Modify your localrc like this, and replace <replaceme> with your settings.
+Modify your localrc like this, and replace \<replaceme\> with your settings.
 ```
 # localrc
 
